@@ -10,6 +10,7 @@ be implemented
 
 import json
 from pprint import pprint
+from parser import text_2_terms
 
 # given a query, search the index
 def search(qry):
@@ -19,18 +20,7 @@ def search(qry):
         index = json.load(f)
 
         # create terms out of the query
-         # length of terms
-        min_gram = 3
-        max_gram = 6
-
-        qry_terms = []
-
-        # for every word in the text, save the position
-        for word in qry.split():
-            for window in range(min_gram, min(max_gram + 1, len(word) + 1)):
-                term = word[:window]
-
-                qry_terms.append(term)
+        qry_terms = text_2_terms(qry, position=False)
                 
         # search the terms in the index and append the results to the dictionary
         for t in qry_terms:
@@ -39,19 +29,29 @@ def search(qry):
                     if not doc in matches:
                         matches[doc] = index[t][doc]
 
-        pprint(matches)
+    return matches
 
-        
+
+# query input loop
+def qry_loop():
+    while True:
+        # wait for input
+        qry = input('search: ')
+
+        # exit
+        if qry == 'e':
+            print('exiting programm')
+            break
+            
+        # matches
+        m = search(qry)
+
+        pprint(m)
 
 
 
 def main_test():
-    while True:
-        qry = input('search: ')
-        if qry == 'e':
-            print('exiting programm')
-            break
-        search(qry)
+    qry_loop()
 
 if __name__ == '__main__':
     main_test()
