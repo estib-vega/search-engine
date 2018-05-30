@@ -12,9 +12,10 @@ if they come from a query, only the terms are returned
 
 import json
 from pprint import pprint
+from file_manager import get_complete_path, index_path
 
 # make terms from text
-def text_2_terms(text, min_gram=3, max_gram=6, position=True):
+def text_2_terms(text, min_gram=1, max_gram=6, position=True):
     if not position:
         terms = []
         # return only the terms without 
@@ -78,8 +79,10 @@ def make_index(term_appearances):
 
 # writes terms from a data file into another one
 def parse_from_json(file):
+    d_p = get_complete_path('data', file)
+    i_p = index_path()
     # open file
-    with open(file, 'r', errors='ignore') as f:
+    with open(d_p, 'r', errors='ignore') as f:
         data = json.load(f)
         term_appearances = []
 
@@ -91,18 +94,5 @@ def parse_from_json(file):
     index = make_index(term_appearances)
 
     # write to new file
-    with open('sample_index.json', 'w', errors="ignore") as index_doc:
+    with open(i_p, 'w', errors="ignore") as index_doc:
         json.dump(index, index_doc)
-
-
-                    
-
-
-
-def main_test():
-    parse_from_json('sample_data.json')
-    # pass
-
-
-if __name__ == '__main__':
-    main_test()

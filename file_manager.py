@@ -5,7 +5,7 @@ where the things should and are stored.
 all is read from and stored to a file
 """
 import os, json
-from shutil import rmtree
+from shutil import rmtree, copy2
 
 # return the joint path for a specific folder
 # and a doc name
@@ -35,8 +35,8 @@ def data_path():
 
 # return index path
 def setup():
-    index = "./docs/index"
-    data = "./docs/data"
+    index = "./docs/index/index.json"
+    data = "./docs/data/"
     paths = "./docs/paths.json"
 
     # if the folder doesn't exist, then create it
@@ -49,10 +49,9 @@ def setup():
         os.makedirs(data)
 
     # write the paths to the path 
-    if not os.path.exists(paths):
-        p = {'index': index, 'data': data}
-        with open(paths, 'w', errors='ignore') as f:
-            json.dump(p, f)
+    p = {'index': index, 'data': data}
+    with open(paths, 'w', errors='ignore') as f:
+        json.dump(p, f)
 
 # delete all files from data and index
 def clean_up():
@@ -66,31 +65,12 @@ def clean_up():
     # create them again
     setup()
 
-def main_test():
-    from time import sleep
+# copy the data file to the data directory
+def copy_data(path):
+    src = './' + path
+    dst = data_path()
 
-    setup()
-    print(index_path())
-    print(data_path())
-    index_p = get_complete_path('index', 'my.txt')
-    data_p = get_complete_path('data', 'my.txt')
-
-    try:
-        print(get_complete_path('jj', 'my.txt'))
-    except AttributeError as e:
-        print(e)
-
-    print(index_p)
-    print(data_p)
-    with open(index_p, 'w') as f:
-        f.write('hello index')
-
-    with open(data_p, 'w') as f:
-        f.write('hello data')
-
-    sleep(5)
-
-    clean_up()
-
-if __name__ == '__main__':
-    main_test()
+    if os.path.exists(src):
+        copy2(src, dst)
+    else:
+        raise IOError('File does not exist')

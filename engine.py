@@ -11,12 +11,13 @@ be implemented
 import json
 from pprint import pprint
 from parser import text_2_terms
+from file_manager import index_path
 
 # given a query, search the index
 def search(qry):
     matches = {}
-
-    with open('sample_index.json', 'r', errors='ignore') as f:
+    i_p = index_path()
+    with open(i_p, 'r', errors='ignore') as f:
         index = json.load(f)
 
         # create terms out of the query
@@ -50,11 +51,3 @@ def qry_loop():
         m = search(qry)
 
         pprint(m)
-
-
-
-def main_test():
-    qry_loop()
-
-if __name__ == '__main__':
-    main_test()
