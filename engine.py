@@ -22,13 +22,16 @@ def search(qry):
         # create terms out of the query
         qry_terms = text_2_terms(qry, position=False)
                 
-        # search the terms in the index and append the results to the dictionary
+        # search the terms in the index and append 
+        # the results to the dictionary
         for t in qry_terms:
             if t in index:
+                # for every doc in the index-term
                 for doc in index[t]:
+                    # if the document doesn't already exists
+                    # store it
                     if not doc in matches:
                         matches[doc] = index[t][doc]
-
     return matches
 
 
@@ -42,7 +45,7 @@ def qry_loop():
         if qry == 'e':
             print('exiting programm')
             break
-            
+
         # matches
         m = search(qry)
 
