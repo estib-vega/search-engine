@@ -37,7 +37,12 @@ def main():
     parser.parse_from_json(data_json)
 
     # start search
-    engine.qry_loop()
+    try:
+        engine.qry_loop()
+    except Exception as e:
+        print('Error:', e, '\nexiting programm')
+        file_manager.clean_up()
+
 
     # delete all
     file_manager.clean_up()

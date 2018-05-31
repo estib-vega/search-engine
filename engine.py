@@ -13,6 +13,20 @@ from pprint import pprint
 from parser import text_2_terms
 from file_manager import index_path, data_path
 
+# given a term and an index
+# it returns matches
+def match(qry, index):
+    matches = {}
+    if qry in index:
+        # for every doc in the index-term
+        for doc in index[qry]:
+            # if the document doesn't already exists
+            # store it
+            if not doc in matches:
+                matches[doc] = index[qry][doc]
+    
+    return matches
+
 
 # given a query, search the index
 def search(qry):
@@ -21,24 +35,28 @@ def search(qry):
     with open(i_p, 'r', errors='ignore') as f:
         index = json.load(f)
 
-        # create terms out of the query
-        qry_terms = text_2_terms(qry, position=False)
-                
         # search the terms in the index and append 
         # the results to the dictionary
-        for t in qry_terms:
-            if t in index:
-                # for every doc in the index-term
-                for doc in index[t]:
-                    # if the document doesn't already exists
-                    # store it
-                    if not doc in matches:
-                        matches[doc] = index[t][doc]
-    return matches
+
+        # matches for the exact query
+        exact_matches = match(qry, index)
+
+        if len(exact_matches) == 0:
+            # create terms out of the query
+            qry_terms = text_2_terms(qry, position=False)
+
+            # matches for all generated terms
+            for t in qry_terms:
+                matches[t] = match(t, index)
+
+            return None, matches
+        
+
+    return exact_matches, None
 
 # get the surrounding text for the display of text snippets
 # p -surround is the number of words aside of the match that is displayed
-def get_snippets(positions, file, page, surround=4):
+def get_snippets(positions, file, page):
     # get the raw text from the data file
     data = data_path() + file.split('.')[0] + '.json'
     with open(data, 'r') as f:
@@ -51,44 +69,71 @@ def get_snippets(positions, file, page, surround=4):
                 break
     # make it a list
     text_list = text.split()
+    last = len(text_list) - 1
+    
+    surround = 4
 
     # for every position 
     for pos in positions:
         # print the surrounding text
         sur = 0
         snipp = ""
-        i = pos - 2
-        if i < 0:
-            i = 0
+        
+        # start the index 
+        # 2 words before the matching word
+        # check if the index is out of range
+        if pos <= last - 2:
+            # the position is at least third to last
+            # index starts 2 positions before the word
+            i = pos - 2
+            
+            # if the index is less than 0 the set to 0
+            if i < 0:
+                i = 0
+        else:
+            diff = 5 - (last - pos)
+            i = last - diff + 1
+
+        
         while sur <= surround:
+            if i > last: break
+
+            # if the index is the position 
+            # of the matching word, mark it
             if i == pos:
                 snipp += '-> '
+
+            # append the word to the text snippet
             snipp += text_list[i] + " "
+            
+            # if the index is the position 
+            # of the matching word, mark it
+            if i == pos:
+                snipp += '<- '
+            
+            # iterate
             i += 1
             sur += 1
+
         print(snipp)
         print('--------------------------------------')
 
 
 # display answers in terminal with nice text snippets
 def display_matches(matches):
-    m_num = len(matches)
-    if m_num == 0:
-        print("query returned 0 results")
-    else:
-        print(m_num, "results found:")
-        for doc_page in matches:
-            title = doc_page.split('_')[0]
-            page = doc_page.split('_')[1]
+    for doc_page in matches:
+        title = doc_page.split('_')[0]
+        page = doc_page.split('_')[1]
 
-            print('\n\t-', title, '- page:', page, '\n')
-            get_snippets(matches[doc_page], title, page)
+        print('\n\t-', title, '- page:', page, '\n')
+        get_snippets(matches[doc_page], title, page)
+        
 
 # query input loop
 def qry_loop():
     while True:
         # wait for input
-        qry = input('search: ')
+        qry = input('\n\nsearch: ')
 
         # exit
         if qry == 'e':
@@ -96,6 +141,20 @@ def qry_loop():
             break
 
         # matches
-        m = search(qry)
+        e, m = search(qry)
 
-        display_matches(m)
+        if e: 
+            print(len(e), "results found")
+            display_matches(e)
+        
+        if m: 
+            print('found 0 page results\nmaybe you were looking for this...\n')
+            for alt in m:
+                alt_dict = m[alt]
+                d_l = len(alt_dict)
+                
+                if d_l != 0: 
+                    print(d_l, "page results found for", alt)
+                    display_matches(alt_dict)
+
+

@@ -10,7 +10,7 @@ if they come from a query, only the terms are returned
 
 """
 
-import json
+import json, string, re
 from file_manager import get_complete_path, index_path
 
 # unnecesary words
@@ -31,7 +31,8 @@ def text_2_terms(text, min_gram=1, max_gram=6, position=True):
         for word in text.split():
             if not word in STOP_WORDS:
                 for window in range(min_gram, min(max_gram + 1, len(word) + 1)):
-                    term = word[:window]
+                    w = re.sub('[' + string.punctuation + ']', '', word).lower().rstrip()
+                    term = w[:window]
 
                     if not term in terms:
                         terms.append(term)
@@ -43,7 +44,8 @@ def text_2_terms(text, min_gram=1, max_gram=6, position=True):
     for pos, word in enumerate(text.split()):
         if not word in STOP_WORDS:
             for window in range(min_gram, min(max_gram + 1, len(word) + 1)):
-                term = word[:window]
+                w = re.sub('[' + string.punctuation + ']', '', word).lower().rstrip()
+                term = w[:window]
 
                 # if the term isn't in the dictionary,
                 # then set the default as an array for the positions
