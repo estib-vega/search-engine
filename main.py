@@ -27,8 +27,11 @@ def main():
             # copy the data into the directory
             file_manager.copy_data(data)
         except IOError as e:
-            print(e)
             continue
+        except RuntimeError as e:
+            print(e, '\nending progroamm')
+            file_manager.clean_up()
+            sys.exit(1)
         break
 
     print('readying the data to be parsed from', data)

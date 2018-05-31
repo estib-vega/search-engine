@@ -22,6 +22,11 @@ STOP_WORDS = set([
         'they', 'this', 'to', 'was', 'will', 'with'
     ])
 
+# retrun clean string
+def cln_string(stri):
+    w = re.sub('[' + string.punctuation + ']', '', stri).lower().rstrip()    
+    return w
+
 # make terms from text
 def text_2_terms(text, min_gram=1, max_gram=6, position=True):
     if not position:
@@ -31,7 +36,7 @@ def text_2_terms(text, min_gram=1, max_gram=6, position=True):
         for word in text.split():
             if not word in STOP_WORDS:
                 for window in range(min_gram, min(max_gram + 1, len(word) + 1)):
-                    w = re.sub('[' + string.punctuation + ']', '', word).lower().rstrip()
+                    w = cln_string(word)
                     term = w[:window]
 
                     if not term in terms:
@@ -44,7 +49,7 @@ def text_2_terms(text, min_gram=1, max_gram=6, position=True):
     for pos, word in enumerate(text.split()):
         if not word in STOP_WORDS:
             for window in range(min_gram, min(max_gram + 1, len(word) + 1)):
-                w = re.sub('[' + string.punctuation + ']', '', word).lower().rstrip()
+                w = cln_string(word)
                 term = w[:window]
 
                 # if the term isn't in the dictionary,

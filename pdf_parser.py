@@ -37,14 +37,19 @@ def parse_from_pdf(pdf_file):
             text = pageObj.extractText()
 
             # convert to ascii string
-            t = text.encode(encoding='ascii', errors='ignore').decode()
+            t = text.encode(encoding='ascii', errors='ignore').decode(encoding='ascii', errors='ignore')
             clean_text = ''.join(c for c in t if c.isprintable())
-            pdf_dict.append({'title': title, 'page': count, 'text': clean_text})
+            if not len(clean_text) == 0:
+                pdf_dict.append({'title': title, 'page': count, 'text': clean_text})
         
-        print('parsed from', pdf_file, '\nnumber of pages:', count)
+        print('parsing from', pdf_file, '\nnumber of pages:', count)
         return pdf_dict
 
 # from a pdf to json data
 def pdf_2_json(pdf_file, json_file):
     pdf = parse_from_pdf(pdf_file)
+
+    if len(pdf) == 0:
+        raise RuntimeError('Could not parse pdf')
+
     write_json_data(json_file, pdf)

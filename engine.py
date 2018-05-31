@@ -10,7 +10,7 @@ be implemented
 
 import json
 from pprint import pprint
-from parser import text_2_terms
+from parser import text_2_terms, cln_string
 from file_manager import index_path, data_path
 
 # given a term and an index
@@ -29,7 +29,7 @@ def match(qry, index):
 
 
 # given a query, search the index
-def search(qry):
+def search(qry, max_alts=5, max_pages=2):
     matches = {}
     i_p = index_path() + 'index.json'
     with open(i_p, 'r', errors='ignore') as f:
@@ -37,17 +37,27 @@ def search(qry):
 
         # search the terms in the index and append 
         # the results to the dictionary
-
+        cln_q = cln_string(qry)
+        
         # matches for the exact query
-        exact_matches = match(qry, index)
+        e_m = match(cln_q, index)
+        exact_matches = {}
+        for k in list(e_m.keys())[:max_pages]:
+            exact_matches[k] = e_m[k]
+
 
         if len(exact_matches) == 0:
             # create terms out of the query
             qry_terms = text_2_terms(qry, position=False)
 
             # matches for all generated terms
-            for t in qry_terms:
-                matches[t] = match(t, index)
+            for t in qry_terms[:max_alts]:
+
+                al_matches = match(t, index)
+                for key in list(al_matches.keys())[:max_pages]:
+                    matches.setdefault(t, {})
+                    matches[t][key] = al_matches[key]
+
 
             return None, matches
         
@@ -101,7 +111,7 @@ def get_snippets(positions, file, page):
             # if the index is the position 
             # of the matching word, mark it
             if i == pos:
-                snipp += '-> '
+                snipp += '|-> '
 
             # append the word to the text snippet
             snipp += text_list[i] + " "
@@ -109,14 +119,14 @@ def get_snippets(positions, file, page):
             # if the index is the position 
             # of the matching word, mark it
             if i == pos:
-                snipp += '<- '
+                snipp += '<-| '
             
             # iterate
             i += 1
             sur += 1
 
-        print(snipp)
-        print('--------------------------------------')
+        print('\t\t', snipp)
+        print('\t\t--------------------------------------\n')
 
 
 # display answers in terminal with nice text snippets
@@ -144,17 +154,18 @@ def qry_loop():
         e, m = search(qry)
 
         if e: 
-            print(len(e), "results found")
+            print(len(e), "results being displayed")
             display_matches(e)
         
         if m: 
-            print('found 0 page results\nmaybe you were looking for this...\n')
+            print('found 0 page results for', qry, '\nmaybe you were looking for this...\n')
+
             for alt in m:
                 alt_dict = m[alt]
                 d_l = len(alt_dict)
                 
                 if d_l != 0: 
-                    print(d_l, "page results found for", alt)
+                    print(d_l, "page results displayed for", alt)
                     display_matches(alt_dict)
 
 
