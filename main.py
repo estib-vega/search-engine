@@ -4,6 +4,7 @@ the main file is the one that should be always started on
 -sets up the files and the file manager
 -parses the data and stores it
 -starts the query loop
+-in the end, it cleans up
 
 """
 
@@ -16,7 +17,10 @@ def main():
         
         if data == 'e':
             print('exiting programm')
+            # delete all
+            file_manager.clean_up()
             sys.exit(1)
+
         # create file environment
         file_manager.setup()
         try:
@@ -29,10 +33,13 @@ def main():
 
     print('readying the data to be parsed from', data)
     # parse data to index
-    parser.parse_from_json(data)
+    data_json = data.split('.')[0] + '.json'
+    parser.parse_from_json(data_json)
 
+    # start search
     engine.qry_loop()
 
+    # delete all
     file_manager.clean_up()
 
 

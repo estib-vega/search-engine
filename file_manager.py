@@ -6,16 +6,7 @@ all is read from and stored to a file
 """
 import os, json
 from shutil import rmtree, copy2
-
-# return the joint path for a specific folder
-# and a doc name
-def get_complete_path(folder, name):
-    if folder == 'index':
-        return os.path.join(index_path(), name)
-    elif folder == 'data':
-        return os.path.join(data_path(), name)
-    else:
-        raise AttributeError('The folder must be either "data" or "index"')
+from pdf_parser import pdf_2_json
 
 # read from paths
 def read_path(key):
@@ -33,9 +24,19 @@ def index_path():
 def data_path():
     return read_path('data')
 
+# return the joint path for a specific folder
+# and a doc name
+def get_complete_path(folder, name):
+    if folder == 'index':
+        return os.path.join(index_path(), name)
+    elif folder == 'data':
+        return os.path.join(data_path(), name)
+    else:
+        raise AttributeError('The folder must be either "data" or "index"')
+
 # return index path
 def setup():
-    index = "./docs/index/index.json"
+    index = "./docs/index/"
     data = "./docs/data/"
     paths = "./docs/paths.json"
 
@@ -69,8 +70,14 @@ def clean_up():
 def copy_data(path):
     src = './' + path
     dst = data_path()
+    suff = path.split('.')[-1]
+    name = path.split('.')[0]
 
     if os.path.exists(src):
-        copy2(src, dst)
+        if suff == 'pdf':
+            d = dst + name + '.json'
+            pdf_2_json(src, d)
+        else:
+            copy2(src, dst)
     else:
         raise IOError('File does not exist')
