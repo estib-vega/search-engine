@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="./css/main.css">
     <link href="https://fonts.googleapis.com/css?family=Fjalla+One" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <title>Search Engine</title>
@@ -13,13 +13,16 @@
     <h4>by J. Esteban Vega</h4>
 
     <input type="text" name="search_bar" id="search_bar" placeholder="search" onkeyup="qry()">
-    <h2 id="res"></h2>
+    <div class="result-container" id="res">
+        <!-- <h2 id="res"></h2> -->
+    </div>
+    
 
     <script>
         function qry(){
             const input = document.getElementById('search_bar').value
             if(input == ""){
-                document.getElementById('res').innerText = "";
+                document.getElementById('res').innerHTML = "<h2> </h2>";
                 return
             }
 
@@ -32,7 +35,7 @@
                     // timeout: 30000,
                     async: false,
                 }).done(function(data){
-                    document.getElementById('res').innerText = data.results;
+                    document.getElementById('res').innerHTML = "<h2>" + data.results + "</h2>";
                 }).fail(function(data){
                     alert('Error: Could not get');
                 })

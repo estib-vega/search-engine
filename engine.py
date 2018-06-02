@@ -112,7 +112,10 @@ def get_snippets(positions, file, page, returnstr=False):
             # if the index is the position 
             # of the matching word, mark it
             if i == pos:
-                snipp += '|-> '
+                if not returnstr:
+                    snipp += '|-> '
+                else:
+                    snipp += '<span> '
 
             # append the word to the text snippet
             snipp += text_list[i] + " "
@@ -120,18 +123,20 @@ def get_snippets(positions, file, page, returnstr=False):
             # if the index is the position 
             # of the matching word, mark it
             if i == pos:
-                snipp += '<-| '
-            
+                if not returnstr:
+                    snipp += '<-| '
+                else:
+                    snipp += '</span>'
             # iterate
             i += 1
             sur += 1
         
-        result += '\t\t---- ' + str(snipp) + '\n\n'
-        # result += '\n\t\t--------------------------------------\n'
+        result += '"[...] ' + str(snipp) + ' [...]"<br><br>'
+        
          # return resulst as str
         if not returnstr:
             print('\t\t', snipp)
-            # print('\t\t--------------------------------------\n')
+            print('\t\t--------------------------------------\n')
     if returnstr:
         return result
         
@@ -146,7 +151,7 @@ def display_matches(matches, returnstr=False):
         
         # return resulst as str
         if returnstr:
-            result += '\n\t-- ' + str(title) + '- page:' + str(page) + '\n\n'
+            result += '<br>-- page: ' + str(page) + '<br><br>'
             result += get_snippets(matches[doc_page], title, page, True)
         else:
             print('\n\t-', title, '- page:', page, '\n')
@@ -195,7 +200,7 @@ def qry_2_string(qry):
         return result
         
     if m: 
-        result = 'found 0 page results for: ' + qry + '\nmaybe you were looking for this...\n\n'
+        result = 'found 0 page results for: ' + qry + '<br>maybe you were looking for this...<br><br>'
 
         for alt in m:
             alt_dict = m[alt]
