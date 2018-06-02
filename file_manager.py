@@ -7,17 +7,21 @@ all is read from and stored to a file
 import os, json
 from shutil import rmtree, copy2
 from pdf_parser import pdf_2_json
+from pprint import pprint
 
 # read from paths
 def read_path(key):
     with open("./docs/paths.json", 'r') as f:
         path = json.load(f)
-
         return path[key]
 
 # return index path
 def index_path():
    return read_path('index')
+
+# return uploads path
+def uploads_path():
+   return read_path('uploads')
 
 # return path from which 
 # the data should be read
@@ -31,6 +35,8 @@ def get_complete_path(folder, name):
         return os.path.join(index_path(), name)
     elif folder == 'data':
         return os.path.join(data_path(), name)
+    elif folder == 'uploads':
+        return os.path.join(uploads_path(), name)
     else:
         raise AttributeError('The folder must be either "data" or "index"')
 
@@ -39,6 +45,7 @@ def setup():
     index = "./docs/index/"
     data = "./docs/data/"
     paths = "./docs/paths.json"
+    uploads = "./uploads/"
 
     # if the folder doesn't exist, then create it
     # index
@@ -49,13 +56,18 @@ def setup():
     if not os.path.exists(data):
         os.makedirs(data)
 
+    # uploads
+    if not os.path.exists(uploads):
+        os.makedirs(uploads)
+
     # write the paths to the path 
-    p = {'index': index, 'data': data}
+    p = {'index': index, 'data': data, 'uploads': uploads}
     with open(paths, 'w', errors='ignore') as f:
         json.dump(p, f)
 
 # delete all files from data and index
 def clean_up():
+    print("\n..........cleaning up..........")
     # remove complete directories
     if os.path.exists(index_path()):
         rmtree(index_path(), ignore_errors=True)
@@ -63,15 +75,18 @@ def clean_up():
     if os.path.exists(data_path()):
         rmtree(data_path(), ignore_errors=True)
 
+    if os.path.exists(uploads_path()):
+        rmtree(uploads_path(), ignore_errors=True)
+
     # create them again
     setup()
 
 # copy the data file to the data directory
 def copy_data(path):
-    src = './' + path
+    src = path
     dst = data_path()
-    suff = path.split('.')[-1]
-    name = path.split('.')[0]
+    suff = path.split('.')[-1].lower()
+    name = path.split('.')[-2].split('/')[-1]
 
     if os.path.exists(src):
         if suff == 'pdf':

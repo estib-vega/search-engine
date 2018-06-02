@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Fjalla+One" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <title>Search Engine</title>
+</head>
+<body>  
+
+    <h3>Simple PDF Search Engine</h3>
+    <h4>by J. Esteban Vega</h4>
+    <form id="form">
+        <input type="file" name="input_file" id="input_file" class="inputfile" accept=".pdf">
+        <label for="input_file">Choose a pdf file</label>
+        <button id="up_button" onclick="handleUpload()">upload</button>
+    </form>
+    
+    <!-- <input type="text" name="search_bar" id="search_bar" placeholder="search">
+    <h2 id="res">Results</h2> -->
+
+    <script>
+
+            function handleUpload(){
+                // check that a file is selected
+                const filelen = document.getElementById('input_file').files.length
+                if (filelen < 1){
+                    return;
+                }
+    
+                // post file
+                var file = document.getElementById('form')['input_file'].files[0];
+                var fd = new FormData();
+                fd.append("file", file);
+                
+                $.ajax({
+                    method: 'POST',
+                    url: "/fileupload",
+                    data: fd,
+                    processData: false,
+                    contentType: false,
+                    dataType: "json",
+                    async: false,
+                }).done(function(data){
+                    // alert(data.msg)
+                }).fail(function(data){
+                    alert('Error: Could not upload');
+                })
+            }
+        </script>
+    
+</body>
+</html>

@@ -66,7 +66,7 @@ def search(qry, max_alts=5, max_pages=2):
 
 # get the surrounding text for the display of text snippets
 # p -surround is the number of words aside of the match that is displayed
-def get_snippets(positions, file, page):
+def get_snippets(positions, file, page, returnstr=False):
     # get the raw text from the data file
     data = data_path() + file.split('.')[0] + '.json'
     with open(data, 'r') as f:
@@ -83,6 +83,7 @@ def get_snippets(positions, file, page):
     
     surround = 4
 
+    result = ""
     # for every position 
     for pos in positions:
         # print the surrounding text
@@ -124,19 +125,34 @@ def get_snippets(positions, file, page):
             # iterate
             i += 1
             sur += 1
-
-        print('\t\t', snipp)
-        print('\t\t--------------------------------------\n')
+        
+        result += '\t\t---- ' + str(snipp) + '\n\n'
+        # result += '\n\t\t--------------------------------------\n'
+         # return resulst as str
+        if not returnstr:
+            print('\t\t', snipp)
+            # print('\t\t--------------------------------------\n')
+    if returnstr:
+        return result
+        
 
 
 # display answers in terminal with nice text snippets
-def display_matches(matches):
+def display_matches(matches, returnstr=False):
+    result = ""
     for doc_page in matches:
         title = doc_page.split('_')[0]
         page = doc_page.split('_')[1]
+        
+        # return resulst as str
+        if returnstr:
+            result += '\n\t-- ' + str(title) + '- page:' + str(page) + '\n\n'
+            result += get_snippets(matches[doc_page], title, page, True)
+        else:
+            print('\n\t-', title, '- page:', page, '\n')
+            get_snippets(matches[doc_page], title, page)
 
-        print('\n\t-', title, '- page:', page, '\n')
-        get_snippets(matches[doc_page], title, page)
+    if returnstr: return result
         
 
 # query input loop
@@ -168,4 +184,26 @@ def qry_loop():
                     print(d_l, "page results displayed for", alt)
                     display_matches(alt_dict)
 
+# for the browser, ask query
+# return string
+def qry_2_string(qry):
+    e, m = search(qry)
+
+    if e: 
+        result = str(len(e)) + " results being displayed"
+        result += display_matches(e, True)
+        return result
+        
+    if m: 
+        result = 'found 0 page results for: ' + qry + '\nmaybe you were looking for this...\n\n'
+
+        for alt in m:
+            alt_dict = m[alt]
+            d_l = len(alt_dict)
+            
+            if d_l != 0: 
+                result += str(d_l) + " page results displayed for: " + str(alt)
+                result += display_matches(alt_dict, True)
+
+        return result
 

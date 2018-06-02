@@ -8,10 +8,10 @@ the main file is the one that should be always started on
 
 """
 
-import file_manager, engine, parser, sys
+import file_manager, engine, parser, sys, server
 
-def main():
-    
+# main if it's using the terminal as an interface
+def terminal_main():
     while True:
         data = input('data file to be indexed: ')
         
@@ -48,7 +48,22 @@ def main():
 
 
     # delete all
-    file_manager.clean_up()
+    file_manager.clean_up() 
+
+
+# main if it's using browser user interface
+def browser_main():
+    # set up file environment
+    file_manager.setup()
+
+    # run ui
+    server.start(1234)
+
+    # delete all
+    file_manager.clean_up() 
+
+def main():
+    browser_main()
 
 
 
