@@ -36,9 +36,13 @@ def parse_data(file):
 
     # from json, to index json
     parser.parse_from_json(name + ".json")
+    print(".....................ready")
+    return True
 
 # search query
 def search(qry):
-    resp = engine.qry_2_string(qry)
+    return engine.qry_2_string(qry)
 
-    return resp
+# reset state
+def reset():
+    file_manager.clean_up()

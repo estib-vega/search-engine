@@ -11,11 +11,24 @@ from flask_restful import Api, Resource
 app = Flask(__name__)
 api = Api(app)
 
+# the file has been indexed
+ready = False
+
+# parse the file
+def parse_file(file):
+    global ready 
+    ready = user_interface.parse_data(file)
+
 # class for query processing
 class QueryApi(Resource):
      def get(self, qry):
         response = user_interface.search(qry)
-        return jsonify({'results': response})
+        if not response == None:
+            status = response.split('___')[0]
+            results = response.split('___')[1]
+            return jsonify({'status': status, 'results': results})
+        else:
+            return jsonify({'status': 'nothing found', 'results': ''})
 
 # api
 api.add_resource(QueryApi, "/query/api/<string:qry>")
@@ -23,10 +36,17 @@ api.add_resource(QueryApi, "/query/api/<string:qry>")
 # home
 @app.route("/")
 def hello():
+    # return render_template("index.html")
     params = request.args.get('input_file', default="-", type=str)
     if params == "-":
+        user_interface.reset()
+        global ready
+        ready = False
         return render_template("index.html")
     else:
+        # global ready
+        while not ready:
+            pass
         return render_template("search.html")
 
 # static files - css
@@ -38,14 +58,11 @@ def send_css(path):
 @app.route("/fileupload", methods=['POST'])
 def upload_file():
     if request.method == 'POST':
-        # check file...
-        # TODO
-        # save file
         file = request.files['file']
         file.save('./uploads/file.pdf')
 
         # parse it 
-        t = threading.Thread(target=user_interface.parse_data, args=('file.pdf',), daemon=True)
+        t = threading.Thread(target=parse_file, args=('file.pdf',), daemon=True)
         t.start()
 
         return jsonify({'msg': 'succesfull'})
@@ -69,11 +86,11 @@ def open_browser(port):
     # wait a bit so that the server can start
     # before the 
     sleep(0.25)
-    browser = webbrowser.get('safari')
+    # browser = webbrowser.get()
     # run in local host
     url = '127.0.0.1:' + str(port)
 
-    browser.open_new(url)
+    webbrowser.open_new(url)
 
 # start serving and open page
 def start(p):

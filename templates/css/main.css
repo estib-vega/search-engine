@@ -22,11 +22,16 @@ h2{
     font-family: Helvetica, sans-serif;
     font-weight: lighter;
     font-size: 18px;
+}
+
+.result{
     animation: fade-in 700ms cubic-bezier(0.075, 0.82, 0.165, 1) forwards;
 }
 
 h2 span{
     font-weight: bold;
+    padding: 2px;
+    background-color: rgba(0, 0, 0, 0.2);
 }
 
 .result-container{
@@ -35,6 +40,30 @@ h2 span{
     overflow-y: scroll;
     width: 50%;
     height: 300px;
+}
+
+.result-container h4{
+    font-family: Helvetica, sans-serif;
+    background-color: white;
+    color: black;
+    padding: 5px;
+    border-radius: 3px;
+    opacity: 0.75;
+    margin: 10px;
+}
+
+a{
+    text-decoration: none;
+    font-size: 14px;
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 5px;
+    border-radius: 2px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    color: white;
+    background-color:rgb(48, 189, 5);
+    letter-spacing: 1px;
+    animation: fade-in 800ms cubic-bezier(0.075, 0.82, 0.165, 1) forwards 0.25s; 
+    opacity: 0;
 }
 
 input[type="text"]{
@@ -49,8 +78,10 @@ input[type="text"]{
     font-size: 16px;
     font-family:Helvetica, sans-serif;
     font-weight: lighter;
-    opacity: 1;
+    opacity: 0;
     transition: all 0.5s ease-in-out;
+    animation: fade-in 700ms cubic-bezier(0.075, 0.82, 0.165, 1) forwards;
+    outline: none;
 }
 
 input[type="text"]:disabled{
@@ -61,6 +92,21 @@ label{
     
     font-family: Helvetica, sans-serif;
     font-weight: lighter;
+}
+
+.page-result{
+    background-color:rgba(255, 255, 255, 0.25);
+    border-radius: 3px;
+    padding: 10px;
+    margin: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+.page-result h3{
+    font-style: italic;
+    font-family: Helvetica, sans-serif;
+    margin: 10px;
+    font-size: 24px;
+    font-weight: normal;
 }
 
 .inputfile {
@@ -103,6 +149,10 @@ label{
 
 #up_button:hover{
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+}
+
+#status{
+    margin-top: -10px;
 }
 
 @keyframes fade-in{
