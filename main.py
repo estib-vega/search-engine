@@ -63,7 +63,16 @@ def browser_main():
     file_manager.clean_up() 
 
 def main():
-    browser_main()
+    args = sys.argv
+
+    # if the length of the args,
+    # is 1, then do the browser ui
+    if len(args) == 1:
+        browser_main()
+    elif len(args) == 2:
+        if args[1] == "-t":
+            # open terminal ui
+            terminal_main()
 
 
 

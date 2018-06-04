@@ -14,17 +14,14 @@ import file_manager, parser, engine, sys
 # when the file is succesfully uploaded
 # the data needs to be parsed from it
 def parse_data(file):
-    from time import sleep
-
-    sleep(1)
-    
 
     filepath = file_manager.uploads_path() + file
     name = file.split('.')[0]
     print("parsing file", filepath)
     # parse to data json
     try:
-        # copy the data into the directory
+        # copy the data into the data directory
+        # as json
         file_manager.copy_data(filepath)
     except IOError as e:
         print(e)
@@ -34,7 +31,7 @@ def parse_data(file):
         file_manager.clean_up()
         sys.exit(1)
 
-    # from json, to index json
+    # from data json, to index json
     parser.parse_from_json(name + ".json")
     print(".....................ready")
     return True

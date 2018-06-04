@@ -23,11 +23,14 @@
         <h2 id="loading"></h2>
 
     <script>
+            $("#up_button").hide()
+
             function handleFile(){
                 const files = document.getElementById('input_file').files.length
                 if(files > 0){
                     const filename = document.getElementById('input_file').files[0].name
                     document.getElementById('loading').innerText = "Target file: " + filename
+                    $("#up_button").show()
                 }
             }
 
@@ -52,6 +55,7 @@
                     async: false,
                 }).done(function(data){
                     document.getElementById('loading').innerText = "Loading... Please Wait";
+                    $("#loading").addClass("bounce");
                     $("#input_file").css("display", "none");
                     $("#file_label").css("display", "none");
                     $("#up_button").css("display", "none");

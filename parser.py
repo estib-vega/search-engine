@@ -3,6 +3,8 @@ the string parser takes the normal string of text
 (query or searchable)
 and creates terms or n-grams
 
+--- IT ONLY ASSUMES FRONT N-GRAMS ---
+
 this terms are stored, if they come from the searchable data,
 in files that then can be easily searched by the engine
 
@@ -12,15 +14,6 @@ if they come from a query, only the terms are returned
 
 import json, string, re
 from file_manager import get_complete_path, index_path
-
-# unnecesary words
-STOP_WORDS = set([
-        'a', 'an', 'and', 'are', 'as', 'at', 'be', 'but', 'by',
-        'for', 'if', 'in', 'into', 'is', 'it',
-        'no', 'not', 'of', 'on', 'or', 's', 'such',
-        't', 'that', 'the', 'their', 'then', 'there', 'these',
-        'they', 'this', 'to', 'was', 'will', 'with'
-    ])
 
 # retrun clean string
 def cln_string(stri):
@@ -34,30 +27,28 @@ def text_2_terms(text, min_gram=1, max_gram=6, position=True):
         # return only the terms without 
         # position (used for queries)
         for word in text.split():
-            if not word in STOP_WORDS:
-                for window in range(min_gram, min(max_gram + 1, len(word) + 1)):
-                    w = cln_string(word)
-                    term = w[:window]
+            for window in range(min_gram, min(max_gram + 1, len(word) + 1)):
+                w = cln_string(word)
+                term = w[:window]
 
-                    if not term in terms:
-                        terms.append(term)
+                if not term in terms:
+                    terms.append(term)
         
         return terms
     # ---------------------------------------------------------
     terms = {}
     # for every word in the text, save the position
     for pos, word in enumerate(text.split()):
-        if not word in STOP_WORDS:
-            for window in range(min_gram, min(max_gram + 1, len(word) + 1)):
-                w = cln_string(word)
-                term = w[:window]
+        for window in range(min_gram, min(max_gram + 1, len(word) + 1)):
+            w = cln_string(word)
+            term = w[:window]
 
-                # if the term isn't in the dictionary,
-                # then set the default as an array for the positions
-                terms.setdefault(term, [])
+            # if the term isn't in the dictionary,
+            # then set the default as an array for the positions
+            terms.setdefault(term, [])
 
-                if not pos in terms[term]:
-                    terms[term].append(pos)
+            if not pos in terms[term]:
+                terms[term].append(pos)
     
     return terms
 

@@ -9,7 +9,6 @@ be implemented
 """
 
 import json
-from pprint import pprint
 from parser import text_2_terms, cln_string
 from file_manager import index_path, data_path
 
@@ -199,7 +198,7 @@ def qry_loop():
                     display_matches(alt_dict)
 
 # for the browser, ask query
-# return string
+# return string formated for html
 def qry_2_string(qry, pages=10):
     e, m = search(qry, max_pages=pages)
 

@@ -2,6 +2,10 @@
     the server module is in charge of opening the 
     browser and serving the ui html
 
+    -it communicates to the model through the user interface
+    -it receives the GET and POST requests
+    -it saves the file in the uploads
+    -it responds to the queries with the answers given from the user_interface
 """
 
 from flask import Flask, render_template, send_from_directory, request, jsonify
@@ -16,6 +20,8 @@ ready = False
 
 # parse the file
 def parse_file(file):
+    # start parsing the file and when
+    # notify when done
     global ready 
     ready = user_interface.parse_data(file)
 
@@ -23,11 +29,14 @@ def parse_file(file):
 class QueryApi(Resource):
      def get(self, qry):
         response = user_interface.search(qry)
+
         if not response == None:
+            # found something
             status = response.split('___')[0]
             results = response.split('___')[1]
             return jsonify({'status': status, 'results': results})
         else:
+            # found nothing 
             return jsonify({'status': 'nothing found', 'results': ''})
 
 # api
@@ -44,7 +53,10 @@ def hello():
         ready = False
         return render_template("index.html")
     else:
-        # global ready
+        # if there is a file query, it means it is the redirection
+        # after the successful posting of the file
+        
+        # --- wait until the file is parsed
         while not ready:
             pass
         return render_template("search.html")
@@ -58,6 +70,7 @@ def send_css(path):
 @app.route("/fileupload", methods=['POST'])
 def upload_file():
     if request.method == 'POST':
+        # save the file locally
         file = request.files['file']
         file.save('./uploads/file.pdf')
 
@@ -66,14 +79,6 @@ def upload_file():
         t.start()
 
         return jsonify({'msg': 'succesfull'})
-
-# get results for query
-@app.route("/qry")
-def search_qry():
-    query = request.args.get('query', "-", type=str)
-    resp = user_interface.search(query)
-    return jsonify(result=resp)
-
 
 # start flask server
 def run(p):
@@ -84,7 +89,7 @@ def open_browser(port):
     from time import sleep
     
     # wait a bit so that the server can start
-    # before the 
+    # before the browser opens
     sleep(0.25)
     # browser = webbrowser.get()
     # run in local host
@@ -101,7 +106,3 @@ def start(p):
     t.start()
     # run server
     run(PORT)
-
-
-if __name__ == "__main__":
-    start(1234)

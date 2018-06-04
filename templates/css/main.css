@@ -138,13 +138,14 @@ label{
     font-size: 16px;
     border: none;
     border-radius: 2px;
-    background-color: white;
-    color: #333;
+    background-color: rgb(48, 189, 5);
+    color: white;
     font-family: Helvetica, sans-serif;
     font-weight: lighter;
     padding: 5px;
     cursor: pointer;
     transition: all 0.5s ease-in-out;
+    animation: fade-in 0.5s ease-in-out forwards 0.25s;
 }
 
 #up_button:hover{
@@ -155,6 +156,10 @@ label{
     margin-top: -10px;
 }
 
+.bounce{
+    animation: bounce 0.5s ease-in-out infinite alternate;
+}
+
 @keyframes fade-in{
     0%{
         opacity: 0;
@@ -163,5 +168,14 @@ label{
     100%{
         opacity: 1.0;
         transform: translateY(0);
+    }
+}
+
+@keyframes bounce{
+    0%{
+        transform: scale(1);
+    }
+    100%{
+        transform: scale(1.05);
     }
 }
