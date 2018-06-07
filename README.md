@@ -14,9 +14,9 @@ that can be made from the word that is being searched:
 
 search('unappearing')
 
---> 0 results for 'unappearing'
---> max 10 page-results for 'u'
---> max 10 page-results for 'un'
+- 0 results for 'unappearing'
+- max 10 page-results for 'u'
+- max 10 page-results for 'un'
 
 Dependencies:
 - PyPDF2 for extracting the raw text from supported PDF files.
@@ -25,11 +25,11 @@ Dependencies:
 The program is started from the Terminal (Command Line) as:
   python main.py
   
---> It opens a browser and the app hosted at 'localhost:1234'
---> Select a file by clicking the 'Choose a pdf file' button
---> Clicking the 'upload' button will start parsing and indexing the file 
---> After it's done, the site is redirected to the search bar, there you can start typing the 
+- It opens a browser and the app hosted at 'localhost:1234'
+- Select a file by clicking the 'Choose a pdf file' button
+- Clicking the 'upload' button will start parsing and indexing the file 
+- After it's done, the site is redirected to the search bar, there you can start typing the 
     word you want to look for. The results will be displayed under the search bar
     You also have the option to click the 'new file search' button and parse another file.
---> By terminating the programm from the Terminal with Ctrl+C, the uploaded file, the parsed data, and the
+- By terminating the programm from the Terminal with Ctrl+C, the uploaded file, the parsed data, and the
     index are deleted.
