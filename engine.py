@@ -8,7 +8,7 @@ later some personalization, nob dialing, and filtering will
 be implemented
 """
 
-import json
+import json, operator
 from parser import text_2_terms, cln_string
 from file_manager import index_path, data_path
 
@@ -23,8 +23,10 @@ def match(qry, index):
             # store it
             if not doc in matches:
                 matches[doc] = index[qry][doc]
-    
-    return matches
+
+    # sort matches by number of appearances
+    sorted_matches = sorted(matches.items(), key=lambda item: len(item[1]), reverse=True)
+    return sorted_matches
 
 
 # given a query, search the index
@@ -40,9 +42,10 @@ def search(qry, max_alts=5, max_pages=2):
         
         # matches for the exact query
         e_m = match(cln_q, index)
+
         exact_matches = {}
-        for k in list(e_m.keys())[:max_pages]:
-            exact_matches[k] = e_m[k]
+        for k, v in e_m[:max_pages]:
+            exact_matches[k] = v
 
 
         if len(exact_matches) == 0:
@@ -50,15 +53,17 @@ def search(qry, max_alts=5, max_pages=2):
             qry_terms = text_2_terms(qry, position=False)
 
             # matches for all generated terms
-            for t in qry_terms[:max_alts]:
-
+            for t in qry_terms[:2]:
                 al_matches = match(t, index)
-                for key in list(al_matches.keys())[:max_pages]:
+                for key, val in al_matches[:max_pages]:
                     matches.setdefault(t, {})
-                    matches[t][key] = al_matches[key]
+                    matches[t][key] = val
+            # sort by total appearances
+            sorted_matches = sorted(matches.items(), key=lambda item: sum([len(v) for k, v in item[1].items()]), reverse=True)
+            # return only max alts
+            result_matches = dict((k, v) for k, v in sorted_matches[:max_alts])
 
-
-            return None, matches
+            return None, result_matches
         
 
     return exact_matches, None

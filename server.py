@@ -17,13 +17,20 @@ api = Api(app)
 
 # the file has been indexed
 ready = False
+shouldRedirectHome = False
 
 # parse the file
 def parse_file(file):
     # start parsing the file and when
     # notify when done
-    global ready 
-    ready = user_interface.parse_data(file)
+    global ready, shouldRedirectHome
+    try:
+        ready = user_interface.parse_data(file)
+    except Exception as e:
+        print(e)
+        ready = True
+        shouldRedirectHome = True
+    
 
 # class for query processing
 class QueryApi(Resource):
@@ -49,8 +56,9 @@ def hello():
     params = request.args.get('input_file', default="-", type=str)
     if params == "-":
         user_interface.reset()
-        global ready
+        global ready, shouldRedirectHome
         ready = False
+        shouldRedirectHome = False
         return render_template("index.html")
     else:
         # if there is a file query, it means it is the redirection
@@ -59,7 +67,12 @@ def hello():
         # --- wait until the file is parsed
         while not ready:
             pass
-        return render_template("search.html")
+        if not shouldRedirectHome:
+            return render_template("search.html")
+        else:
+            ready = False
+            shouldRedirectHome = False
+            return render_template("index.html", error_msg="Couldn't parse PDF, please try other")
 
 # static files - css
 @app.route("/css/<path:path>")

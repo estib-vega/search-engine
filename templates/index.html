@@ -20,7 +20,7 @@
         <label id="file_label" for="input_file">Choose a pdf file</label>
         <button id="up_button" onclick="handleUpload()">upload</button>
     </form>
-        <h2 id="loading"></h2>
+        <h2 id="loading">{{ error_msg }}</h2>
 
     <script>
             $("#up_button").hide()
