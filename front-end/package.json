@@ -10,6 +10,9 @@
     "start": "inferno-scripts start",
     "build": "inferno-scripts build",
     "test": "inferno-scripts test --env=jsdom",
-    "eject": "inferno-scripts eject"
+    "eject": "inferno-scripts eject",
+    "clean": "rm -rf ../templates/inferno",
+    "copy": "mkdir ../templates/inferno && cp -a ./build/. ../templates/inferno",
+    "pbuild": "npm run build && npm run clean && npm run copy"
   }
 }

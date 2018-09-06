@@ -23,13 +23,14 @@ shouldRedirectHome = False
 def parse_file(file):
     # start parsing the file and when
     # notify when done
-    global ready, shouldRedirectHome
+    # global ready, shouldRedirectHome
     try:
-        ready = user_interface.parse_data(file)
+        return user_interface.parse_data(file)
     except Exception as e:
         print(e)
-        ready = True
-        shouldRedirectHome = True
+        # ready = True
+        # shouldRedirectHome = True
+        return False
     
 
 # class for query processing
@@ -52,46 +53,53 @@ api.add_resource(QueryApi, "/query/api/<string:qry>")
 # home
 @app.route("/")
 def hello():
-    # return render_template("index.html")
-    params = request.args.get('input_file', default="-", type=str)
-    if params == "-":
-        user_interface.reset()
-        global ready, shouldRedirectHome
-        ready = False
-        shouldRedirectHome = False
-        return render_template("index.html")
-    else:
-        # if there is a file query, it means it is the redirection
-        # after the successful posting of the file
+    user_interface.reset()
+    return render_template("inferno/index.html")
+    # params = request.args.get('input_file', default="-", type=str)
+    # if params == "-":
+    #     user_interface.reset()
+    #     # global ready, shouldRedirectHome
+    #     # ready = False
+    #     # shouldRedirectHome = False
+    #     return render_template("inferno/index.html")
+    # else:
+    #     # if there is a file query, it means it is the redirection
+    #     # after the successful posting of the file
         
-        # --- wait until the file is parsed
-        while not ready:
-            pass
-        if not shouldRedirectHome:
-            return render_template("search.html")
-        else:
-            ready = False
-            shouldRedirectHome = False
-            return render_template("index.html", error_msg="Couldn't parse PDF, please try other")
+    #     # --- wait until the file is parsed
+    #     while not ready:
+    #         pass
+    #     if not shouldRedirectHome:
+    #         return render_template("search.html")
+    #     else:
+    #         ready = False
+    #         shouldRedirectHome = False
+    #         return render_template("index.html", error_msg="Couldn't parse PDF, please try other")
 
 # static files - css
-@app.route("/css/<path:path>")
+@app.route("/static/css/<path:path>")
 def send_css(path):
-    return send_from_directory("./templates/css", path)
+    return send_from_directory("./templates/inferno/static/css", path)
+
+@app.route("/static/js/<path:path>")
+def send_js(path):
+    return send_from_directory("./templates/inferno/static/js", path)
 
 # posting file
 @app.route("/fileupload", methods=['POST'])
 def upload_file():
     if request.method == 'POST':
+        print('post received')
         # save the file locally
         file = request.files['file']
         file.save('./uploads/file.pdf')
 
-        # parse it 
-        t = threading.Thread(target=parse_file, args=('file.pdf',), daemon=True)
-        t.start()
+        # start parsing file, and return succes or failure
+        success = parse_file('file.pdf')
 
-        return jsonify({'msg': 'succesfull'})
+        if success: return jsonify({'msg': 'succesfull'})
+
+        return jsonify({'msg': 'failed'})
 
 # start flask server
 def run(p):

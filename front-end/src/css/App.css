@@ -1,0 +1,24 @@
+.app{
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-content: flex-start;
+    flex-wrap: wrap;
+    position: fixed;
+    top: 0;
+    height: 100vh;
+    width: 100vw;
+    color: white;
+}
+
+.app > h1, h2{
+    width: 100%;
+    text-align: center;
+    margin: 10px 0;
+}
+
+.app > h2 > a{
+    background-color: rgba(255, 255, 255, 0.85);
+    padding: 0 2px;
+    border-radius: 2px;
+}
