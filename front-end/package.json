@@ -13,6 +13,7 @@
     "eject": "inferno-scripts eject",
     "clean": "rm -rf ../templates/inferno",
     "copy": "mkdir ../templates/inferno && cp -a ./build/. ../templates/inferno",
-    "pbuild": "npm run build && npm run clean && npm run copy"
+    "pbuild": "npm run build && npm run clean && npm run copy",
+    "brun": "npm run pbuild && cd .. && python main.py"
   }
 }

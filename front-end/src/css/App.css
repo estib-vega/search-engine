@@ -18,7 +18,7 @@
 }
 
 .app > h2 > a{
-    background-color: rgba(255, 255, 255, 0.85);
+    background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.7));
     padding: 0 2px;
     border-radius: 2px;
 }

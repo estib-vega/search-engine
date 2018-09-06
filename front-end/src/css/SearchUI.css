@@ -1,0 +1,93 @@
+.search-ui-container{
+    width: 100%;
+    height: calc(100vh - 150px);
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.search-ui-container > button {
+    background: linear-gradient(to bottom left, rgb(0, 140, 255), blue);
+    border: none;
+    border-radius: 2px;
+    color: white;
+    font-size: 16px;
+    font-family: helvetica;
+    font-weight: lighter;
+    padding: 5px;
+    cursor: pointer;
+    transition: all 0.5s ease-in-out;
+}
+.search-bar{
+    font-size: 24px;
+    font-family: helvetica;
+    font-weight: lighter;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    margin-top: 10px;
+    outline: none;
+    transition: all 0.3s ease-out;
+}
+
+.search-bar:focus{
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+}
+
+.search-bar:hover{
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+}
+
+.status{
+    font-size: 16px;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    text-align: center;
+    width: 50%;
+    min-width: 300px;
+    border-radius: 5px;
+}
+
+.result-container{
+    background-color: rgba(255, 255, 255, 0.3);
+    width: 100%;
+    border-radius: 3px;
+    max-height: 400px;
+    overflow-y: scroll;
+}
+
+.page-result{
+    background-color:rgba(255, 255, 255, 0.25);
+    border-radius: 3px;
+    padding: 10px;
+    margin: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    font-size: 16px;
+}
+.page-result h3{
+    font-style: italic;
+    font-family: Helvetica, sans-serif;
+    margin: 10px;
+    font-size: 24px;
+    font-weight: normal;
+}
+
+.result-container h4{
+    font-family: Helvetica, sans-serif;
+    background-color: white;
+    color: black;
+    padding: 5px;
+    border-radius: 3px;
+    opacity: 0.75;
+    margin: 10px;
+}
+
+
+h2 span{
+    font-weight: bold;
+    padding: 2px;
+    background-color: rgba(0, 0, 0, 0.2);
+}

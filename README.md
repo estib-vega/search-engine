@@ -3,7 +3,7 @@ simple python implementation for a search engine
 
 
 As stated in the short description, this is a very simple implementation for a search engine.
-I receives a PDF document and parses and indexes it so that it can be searched.
+It receives a PDF document and parses and indexes it so that it can be searched.
 
 This implementation is based in microsearch by toastdriven:
 https://www.youtube.com/watch?v=cY7pE7vX6MU

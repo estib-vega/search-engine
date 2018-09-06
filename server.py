@@ -36,6 +36,8 @@ def parse_file(file):
 # class for query processing
 class QueryApi(Resource):
      def get(self, qry):
+        if qry == "-": return jsonify({'status': '', 'results': ''}) 
+
         response = user_interface.search(qry)
 
         if not response == None:

@@ -1,0 +1,228 @@
+.app{
+    padding: 20px;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: center;
+        justify-content: center;
+    -ms-flex-line-pack: start;
+        align-content: flex-start;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+    position: fixed;
+    top: 0;
+    height: 100vh;
+    width: 100vw;
+    color: white;
+}
+
+.app > h1, h2{
+    width: 100%;
+    text-align: center;
+    margin: 10px 0;
+}
+
+.app > h2 > a{
+    background: -webkit-gradient(linear, left top, right bottom, from(rgba(255, 255, 255, 0.85)), to(rgba(255, 255, 255, 0.7)));
+    background: -webkit-linear-gradient(top left, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.7));
+    background: -o-linear-gradient(top left, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.7));
+    background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.7));
+    padding: 0 2px;
+    border-radius: 2px;
+}
+form {
+    margin: 10px 0;
+}
+
+form > button {
+    background: -webkit-gradient(linear, right top, left bottom, from(#00C01C), to(green));
+    background: -webkit-linear-gradient(top right, #00C01C, green);
+    background: -o-linear-gradient(top right, #00C01C, green);
+    background: linear-gradient(to bottom left, #00C01C, green);
+    border: none;
+    border-radius: 2px;
+    color: white;
+    font-size: 16px;
+    font-family: helvetica;
+    font-weight: lighter;
+    padding: 5px;
+    cursor: pointer;
+    -webkit-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+}
+
+form > button:disabled{
+    opacity: 0.5;
+    cursor: progress;
+}
+
+form > button:hover:enabled{
+    -webkit-box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+}
+
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.inputfile + label {
+   background: -webkit-gradient(linear, right top, left bottom, from(rgb(0, 140, 255)), to(blue));
+   background: -webkit-linear-gradient(top right, rgb(0, 140, 255), blue);
+   background: -o-linear-gradient(top right, rgb(0, 140, 255), blue);
+   background: linear-gradient(to bottom left, rgb(0, 140, 255), blue);
+    color: white;
+    padding: 5px;
+    border-radius: 2px;
+    -webkit-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+    margin-right: 10px;
+}
+
+label{
+    cursor: pointer;
+}
+
+.loadlabel{
+    opacity: 0.5;
+    cursor: progress;
+}
+
+.inputfile:focus + label,
+.inputfile + label:hover:enabled {
+    -webkit-box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+}
+
+.search-ui-container{
+    width: 100%;
+    height: calc(100vh - 150px);
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: start;
+        justify-content: flex-start;
+    -ms-flex-align: center;
+        align-items: center;
+    -ms-flex-direction: column;
+        flex-direction: column;
+    padding: 20px;
+}
+
+.search-ui-container > button {
+    background: -webkit-gradient(linear, right top, left bottom, from(rgb(0, 140, 255)), to(blue));
+    background: -webkit-linear-gradient(top right, rgb(0, 140, 255), blue);
+    background: -o-linear-gradient(top right, rgb(0, 140, 255), blue);
+    background: linear-gradient(to bottom left, rgb(0, 140, 255), blue);
+    border: none;
+    border-radius: 2px;
+    color: white;
+    font-size: 16px;
+    font-family: helvetica;
+    font-weight: lighter;
+    padding: 5px;
+    cursor: pointer;
+    -webkit-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+}
+.search-bar{
+    font-size: 24px;
+    font-family: helvetica;
+    font-weight: lighter;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    -webkit-box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    margin-top: 10px;
+    outline: none;
+    -webkit-transition: all 0.3s ease-out;
+    -o-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
+}
+
+.search-bar:focus{
+    -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+}
+
+.search-bar:hover{
+    -webkit-box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+}
+
+.status{
+    font-size: 16px;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    text-align: center;
+    width: 50%;
+    min-width: 300px;
+    border-radius: 5px;
+}
+
+.result-container{
+    background-color: rgba(255, 255, 255, 0.3);
+    width: 100%;
+    border-radius: 3px;
+    max-height: 400px;
+    overflow-y: scroll;
+}
+
+.page-result{
+    background-color:rgba(255, 255, 255, 0.25);
+    border-radius: 3px;
+    padding: 10px;
+    margin: 10px;
+    -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    font-size: 16px;
+}
+.page-result h3{
+    font-style: italic;
+    font-family: Helvetica, sans-serif;
+    margin: 10px;
+    font-size: 24px;
+    font-weight: normal;
+}
+
+.result-container h4{
+    font-family: Helvetica, sans-serif;
+    background-color: white;
+    color: black;
+    padding: 5px;
+    border-radius: 3px;
+    opacity: 0.75;
+    margin: 10px;
+}
+
+
+h2 span{
+    font-weight: bold;
+    padding: 2px;
+    background-color: rgba(0, 0, 0, 0.2);
+}body {
+  margin: 0;
+  padding: 0;
+  font-family: Helvetica;
+  font-weight: lighter;
+  background: -webkit-gradient(linear, left top, right bottom, from(#F02400), to(#d2007b));
+  background: -webkit-linear-gradient(top left, #F02400, #d2007b);
+  background: -o-linear-gradient(top left, #F02400, #d2007b);
+  background: linear-gradient(to bottom right, #F02400, #d2007b);
+}
+
+h1, h2{
+  font-weight: lighter;
+}
+
+div{
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+/*# sourceMappingURL=main.9777988e.css.map*/
