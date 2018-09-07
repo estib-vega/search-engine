@@ -1,6 +1,8 @@
 # search-engine
 simple python implementation for a search engine
 
+The frontend was now updated using the Inferno JS framework. This is an expansion on React JS, while remaining with the same programming aproach and style. All of the frontend is in the carpet 'front-end'
+
 
 As stated in the short description, this is a very simple implementation for a search engine.
 It receives a PDF document and parses and indexes it so that it can be searched.
